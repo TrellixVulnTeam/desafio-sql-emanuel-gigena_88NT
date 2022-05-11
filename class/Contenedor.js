@@ -1,14 +1,14 @@
-//Importo knex
+
 import * as Knex from 'knex'
 
 class Contenedor {
 
     constructor(options, table) {
-        this.db = Knex.default(options) //Instancio mi DB según los parámetros de conexión pertinentes
+        this.db = Knex.default(options)
         this.table = table
     }
 
-    async getAll() { //return Object[] - Devuelve un array con los objetos presentes en el archivo.
+    async getAll() {
         try {
             const rows = await this.db(this.table)
             return rows
@@ -19,7 +19,7 @@ class Contenedor {
         }
     }
 
-    async save(obj) { //return Number - Recibe un objeto, lo guarda en el archivo, devuelve el id asignado.
+    async save(obj) {
         try {
             const result = await this.db(this.table).insert(obj)
             return result[0]
@@ -30,7 +30,7 @@ class Contenedor {
         }
     }
 
-    async getById(id) { //return Object - Recibe un id y devuelve el objeto con ese id, o null si no está.
+    async getById(id) {
         try {
             const rows = await this.db(this.table).where('id', id)
             return rows[0] || null
@@ -41,22 +41,18 @@ class Contenedor {
         }
     }
 
-    async deleteById(id) { //: void - Elimina del archivo el objeto con el id buscado.
+    async deleteById(id) {
         try {
             return await this.db(this.table).where('id', id).del()
-            //Esto devuelve la qty de registros eliminados
-
         } catch (error) {
             console.log(`Error al eliminar objeto con id ${id} de la tabla ${this.table}.`, error);
             return null
         }
     }
 
-    async deleteAll() { //: void - Elimina todos los objetos presentes en el archivo.
+    async deleteAll() {
         try {
             return await this.db(this.table).del()
-            //Esto devuelve la qty de registros eliminados
-
         } catch (error) {
             console.log(`Error al eliminar la tabla ${this.table}.`, error);
             return null
@@ -66,7 +62,6 @@ class Contenedor {
     async editById(id, obj) {
         try {
             return await this.db(this.table).where('id', id).update(obj)
-            //Esto devuelve qty registros editados
 
         } catch (error) {
             console.log(`Error al editar objeto con id ${id} de la tabla ${this.table}.`, error);
